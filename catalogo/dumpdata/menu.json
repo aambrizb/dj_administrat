@@ -26,5 +26,33 @@
        "listar": true,
        "nivel": 0,
        "activo": true}
+  },
+  {
+    "model": "navegacion.menu",
+    "pk": 22,
+    "fields": {
+      "nombre": "Clientes",
+       "app": "catalogo",
+       "modelo": "cliente",
+       "padre": 20,
+       "icono": "fa fa-ellipsis-v",
+       "permiso": "catalogo.add_cliente",
+       "listar": true,
+       "nivel": 0,
+       "activo": true}
+  },
+  {
+    "model": "navegacion.menu",
+    "pk": 23,
+    "fields": {
+      "nombre": "Tipos de Creditos",
+       "app": "catalogo",
+       "modelo": "tipo_credito",
+       "padre": 20,
+       "icono": "fa fa-ellipsis-v",
+       "permiso": "catalogo.add_tipo_credito",
+       "listar": true,
+       "nivel": 0,
+       "activo": true}
   }
 ]
