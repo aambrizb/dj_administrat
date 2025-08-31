@@ -1,0 +1,30 @@
+[
+  {
+    "model": "navegacion.menu",
+    "pk": 30,
+    "fields": {
+      "nombre": "Administración",
+       "app": "",
+       "modelo": "",
+       "padre": null,
+       "icono": "fa fa-list",
+       "permiso": null,
+       "listar": false,
+       "nivel": 0,
+       "activo": true}
+  },
+  {
+    "model": "navegacion.menu",
+    "pk": 31,
+    "fields": {
+      "nombre": "Créditos",
+       "app": "administracion",
+       "modelo": "credito",
+       "padre": 30,
+       "icono": "fa fa-ellipsis-v",
+       "permiso": "administracion.add_credito",
+       "listar": true,
+       "nivel": 0,
+       "activo": true}
+  }
+]

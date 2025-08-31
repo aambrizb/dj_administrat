@@ -35,7 +35,8 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'divox.app.theme_adminlte.apps.ThemeAdminlteConfig',
-    'catalogo.apps.CatalogoConfig'
+    'catalogo.apps.CatalogoConfig',
+    'administracion.apps.AdministracionConfig'
 ] + INSTALLED_APPS
 
 ROOT_URLCONF = 'dj_administrat.urls'
