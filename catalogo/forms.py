@@ -1,4 +1,6 @@
 from divox.app.base.forms import CustomModelForm
+
+from administracion.models import credito_abono
 from catalogo.models import tipo_credito_ciclo, cliente, cliente_referencia, cliente_direccion
 
 class tipo_credito_cicloModal(CustomModelForm):

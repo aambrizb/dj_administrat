@@ -1,0 +1,151 @@
+{% extends 'core/crear.html' %}
+{% block css %}
+  {{ block.super }}
+  <style>
+    .pagado {
+        background-color:green;
+    }
+  </style>
+{% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  {% include 'componentes/vue.html' %}
+  {% include 'componentes/vue/tabla.html' %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      vue = new Vue({
+        el:"#app",
+        mounted:function() {
+          aplicar_eventos();
+        }
+      });
+
+      $(".btn_pagar").click(function() {
+        showModal("administracion","pagar",{'pk':$(this).data("pk")});
+      });
+    });
+  </script>
+{% endblock %}
+{% block contenido %}
+<div id="app" class="box p-4">
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+        <span class="fa fa-cog"></span>
+        General
+      </a>
+      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
+        <span class="fa fa-users"></span>
+        Integrantes
+      </a>
+    </div>
+  </nav>
+  <div class="tab-content p-5" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <div class="row">
+        <div class="col-8">
+          {% include 'componentes/formulario.html' %}
+        </div>
+        <div class="col-4">
+          <h3 class="text-center">Resumen</h3>
+
+          <div class="row">
+            <div class="col-6">Pago Semanal</div>
+            <div class="col-6">$ {{ obj.monto_pago }}</div>
+          </div>
+          <div class="row">
+            <div class="col-6">Capital</div>
+            <div class="col-6">$ {{ obj.monto_total }}</div>
+          </div>
+          <div class="row">
+            <div class="col-6">Interés</div>
+            <div class="col-6">$ {{ obj.monto_interes }}</div>
+          </div>
+          <div class="row">
+            <div class="col-6">Total a Pagar</div>
+            <div class="col-6">$ {{ obj.monto_final }}</div>
+          </div>
+          <div class="row">
+            <div class="col-6">Ciclo</div>
+            <div class="col-6">{{ obj.ciclo }}</div>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <tabla app="administracion" method="get_integrantes" padre="credito" padre_pk="{{ obj.id }}" data-filtro_credito_id="{{ obj.id }}" can_add="true"></tabla>
+    </div>
+  </div>
+
+  {% if obj.id %}
+  <h2 class="text-center">Corrida de Pagos</h2>
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-condensed table-sm">
+    <thead>
+      <tr>
+        <th class="text-center">#</th>
+        <th class="text-center">Fecha</th>
+        <th class="text-center">Pago a Capital</th>
+        <th class="text-center">Interes</th>
+        <th class="text-center">Subtotal</th>
+        <th class="text-center">IVA</th>
+        <th class="text-center">Pago</th>
+        <th class="text-center">Saldo a Capital</th>
+        <th class="text-center">Saldo Interes</th>
+        <th class="text-center">Cartera Vigente</th>
+        <th class="text-center">Capital Mora</th>
+        <th class="text-center">Interes Mora</th>
+        <th class="text-center">Mora</th>
+        <th class="text-center">Pagado</th>
+        <th class="text-center">Pagado Fecha</th>
+        <th class="text-center">&nbsp;</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in obj.credito_pago_set.all %}
+      <tr class="{% if item.pagado %}bg-green text-white{% endif %} {% if item.no_pago == 13 %}bg-warning text-bold{% endif %}">
+        <td class="text-center">{{ item.no_pago }}</td>
+        <td class="text-center">{{ item.fecha }}</td>
+        <td class="text-center">{{ item.pago_capital }}</td>
+        <td class="text-center">{{ item.interes }}</td>
+        <td class="text-center">$ 0.00</td>
+        <td class="text-center">{{ item.iva }}</td>
+        <td class="text-center">{{ item.pago }}</td>
+        <td class="text-center">{{ item.saldo_capital }}</td>
+        <td class="text-center">{{ item.saldo_interes }}</td>
+        <td class="text-center">{{ item.cartera_vigente }}</td>
+        <td class="text-center">{{ item.capital_mora }}</td>
+        <td class="text-center">{{ item.interes_mora }}</td>
+        <td class="text-center">{{ item.mora }}</td>
+        <td class="text-center">
+          {% if item.pagado %}
+            <span class="fa fa-check-circle text-green"></span>
+          {% else %}
+            <span class="fa fa-times-circle text-danger"></span>
+          {% endif %}
+        </td>
+        <td class="text-center">{{ item.pagado_fecha|default_if_none:'--' }}</td>
+        <td>
+          <button type="button" class="btn btn-success btn_pagar" data-pk="{{ item.id }}">
+            <span class="fa fa-money-bill"></span>
+            Pagar
+          </button>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% endblock %}
