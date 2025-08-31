@@ -15,9 +15,9 @@ class tipo_ciclo(Tabla):
 
 class direccion_cliente(Tabla):
     app = "catalogo"
-    modelo = "direccion"
+    modelo = "cliente_direccion"
 
-    list_display = ('calle', 'numero_exterior', 'numero_interior', 'colonia', 'codigo_postal', 'ciudad', 'estado',)
+    list_display = ('direccion', 'acciones')
     list_hidden = ['id']
 
     def acciones(self, obj):

@@ -43,6 +43,7 @@
     <div class="tab-content p-5" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">{{form}}</div>
     <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="direccion-tab">
+        {% comment %} <tabla app='catalogo' method='direccion_cliente' padre="cliente" padre_pk="{{obj.id}}" can_add="true"> {% endcomment %}
         <tabla app='catalogo' method='direccion_cliente' padre="cliente" padre_pk="{{obj.id}}" data-filtro_cliente_id="{{obj.id}}" can_add="true">
         </tabla>
         
