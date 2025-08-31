@@ -1,0 +1,30 @@
+[
+  {
+    "model": "navegacion.menu",
+    "pk": 20,
+    "fields": {
+      "nombre": "Catalogos",
+       "app": "",
+       "modelo": "",
+       "padre": null,
+       "icono": "fa fa-list",
+       "permiso": null,
+       "listar": false,
+       "nivel": 0,
+       "activo": true}
+  },
+  {
+    "model": "navegacion.menu",
+    "pk": 21,
+    "fields": {
+      "nombre": "Tipos de Documentos",
+       "app": "catalogo",
+       "modelo": "tipo_documento",
+       "padre": 20,
+       "icono": "fa fa-ellipsis-v",
+       "permiso": "catalogo.add_tipo_documento",
+       "listar": true,
+       "nivel": 0,
+       "activo": true}
+  }
+]
