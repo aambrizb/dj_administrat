@@ -11,6 +11,7 @@ class credito(models.Model):
 
   fecha            = models.DateTimeField(default=timezone.localtime)
   tipo_credito     = models.ForeignKey('catalogo.tipo_credito', blank=True, null=True, on_delete=models.PROTECT)
+  tasa             = models.ForeignKey('catalogo.tipo_credito_ciclo', blank=True, null=True, on_delete=models.PROTECT)
   nombre           = models.CharField(max_length=120)
   monto_total      = models.FloatField(default=0)
   monto_pago       = models.FloatField(default=0)

@@ -2,6 +2,7 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from administracion.models import credito_integrante
 from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 
 @receiver(post_save, sender=credito_integrante)
 def update_capital(sender, **kwargs):
@@ -13,22 +14,45 @@ def update_capital(sender, **kwargs):
     monto_total += item.monto
 
   _credito = instance.credito
-  #Calcular Valores Individuales
-  # plazos por meses 4, 6, 8 12 meses (pagos mensuales)
-  # _meses           = _credito.tipo_credito.meses
-  # _interes_mensual = monto_total*tasa_credito
-  # _pago_semanal    = (monto_total/meses)+interes_mensual
-  # _interes         = (_pago_semanal*_semanas)-monto_total
-  # _total_pagar     = _interes+monto_total
+
+  #ciclo asociado al credito
+  ciclo_obj = _credito.tasa
+
+  if _credito.tipo_credito.tipo == 'M':
+    #Calcular Valores Individuales
+    if ciclo_obj:
+    # Obtener tasa y definir factor por tasa
+      tasa_interes = ciclo_obj.tasa_interes/100
+
+    _meses           = _credito.tipo_credito.duracion
+    _interes_mensual = ((monto_total)*tasa_interes)
+    _pago_semanal    = (monto_total/_meses)+_interes_mensual
+    _interes         = _interes_mensual*_meses
+    _total_pagar     = _interes+monto_total
 
 
-  # Calcular Valores Grupales
-  # plazos de 16 semanas exactas (pagos semanales)
-  
-  _semanas      = _credito.tipo_credito.meses*4
-  _pago_semanal = (monto_total/1000)*72.50
-  _interes      = (_pago_semanal*_semanas)-monto_total
-  _total_pagar  = _interes+monto_total
+    # Calcular Valores Grupales
+  else:
+
+    factor = 72.5  
+    if ciclo_obj:
+    # Obtener tasa y definir factor por tasa
+      tasa_interes = ciclo_obj.tasa_interes
+
+      factores = {
+        8: 72.5,
+        7: 80.0,
+        6: 77.5,
+        5: 75.0,
+        4: 72.5,
+      }
+
+      factor = factores.get(tasa_interes, 72.5)
+
+    _semanas      = _credito.tipo_credito.duracion
+    _pago_semanal = (monto_total/1000)*factor
+    _interes      = (_pago_semanal*_semanas)-monto_total
+    _total_pagar  = _interes+monto_total
 
   _credito.monto_total   = float('{0:.2f}'.format(monto_total))
   _credito.monto_pago    = float('{0:.2f}'.format(_pago_semanal))
@@ -39,14 +63,23 @@ def update_capital(sender, **kwargs):
   # Eliminar Corrida Anterior
   _credito.credito_pago_set.all().delete()
 
-  _ultima_fecha = _credito.orden_desembolso+timedelta(days=_credito.dia_pago)
+  _ultima_fecha = _credito.orden_desembolso+timedelta(days=_credito.dia_pago-1)
 
   # Crear nueva Tabla
-  for x in range(int(_semanas)):
-    _credito.credito_pago_set.create(
-      no_pago=x+1,
-      fecha=_ultima_fecha,
-    )
+  if _credito.tipo_credito.tipo == 'M':
+    for x in range(int(_meses)):
+      _credito.credito_pago_set.create(
+        no_pago=x+1,
+        fecha=_ultima_fecha,
+      )
 
-    _ultima_fecha = _ultima_fecha+timedelta(days=7)
+      _ultima_fecha = _ultima_fecha + relativedelta(months=1)
+  else:
+    for x in range(int(_semanas)):
+      _credito.credito_pago_set.create(
+        no_pago=x+1,
+        fecha=_ultima_fecha,
+      )
+
+      _ultima_fecha = _ultima_fecha+timedelta(days=7)
 

@@ -56,7 +56,13 @@
           <h3 class="text-center">Resumen</h3>
 
           <div class="row">
-            <div class="col-6">Pago Semanal</div>
+            <div class="col-6">
+              {% if obj.tipo_credito.tipo == 'M' %}
+                Pago Mensual
+              {% else %}
+                Pago Semanal
+              {% endif %}
+            </div>
             <div class="col-6">$ {{ obj.monto_pago }}</div>
           </div>
           <div class="row">

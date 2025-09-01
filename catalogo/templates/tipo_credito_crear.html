@@ -36,7 +36,7 @@
     <div class="tab-content p-5" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">{{form}}</div>
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <tabla app='catalogo' method='tipo_ciclo' padre="tipo_credito" padre_pk="{{obj.id}}" can_add="true">
+        <tabla app='catalogo' method='tipo_ciclo' padre="tipo_credito" padre_pk="{{obj.id}}" data-filtro_tipo_credito_id="{{obj.id}}" can_add="true">
 
         </tabla>
     </div>

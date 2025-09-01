@@ -20,7 +20,7 @@ class cliente(models.Model):
   activo = models.BooleanField(default=True)
 
   def __str__(self):
-    return self.nombre
+    return f"{self.nombre} {self.apellido_paterno} {self.apellido_materno}"
   
 class direccion(models.Model):
   calle = models.CharField(max_length=120)
@@ -61,8 +61,14 @@ class cliente_referencia(models.Model):
   valida_fecha = models.DateTimeField(default=timezone.localtime)
 
 class tipo_credito(models.Model):
+  tTipo= (
+    ('S', 'Semanal'),
+    ('M', 'Mensual'),
+  )
+
+  tipo = models.CharField(max_length=1, choices=tTipo, default='S')
   nombre = models.CharField(max_length=120)
-  meses = models.FloatField()
+  duracion = models.FloatField()
   activo = models.BooleanField(default=True)
 
   def __str__(self):
@@ -72,3 +78,6 @@ class tipo_credito_ciclo(models.Model):
   tipo_credito = models.ForeignKey("tipo_credito", blank=False, null=True, on_delete=models.PROTECT)
   ciclo = models.IntegerField()
   tasa_interes = models.FloatField()
+
+  def __str__(self):
+    return str(self.tasa_interes)
