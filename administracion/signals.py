@@ -13,8 +13,18 @@ def update_capital(sender, **kwargs):
     monto_total += item.monto
 
   _credito = instance.credito
+  #Calcular Valores Individuales
+  # plazos por meses 4, 6, 8 12 meses (pagos mensuales)
+  # _meses           = _credito.tipo_credito.meses
+  # _interes_mensual = monto_total*tasa_credito
+  # _pago_semanal    = (monto_total/meses)+interes_mensual
+  # _interes         = (_pago_semanal*_semanas)-monto_total
+  # _total_pagar     = _interes+monto_total
 
-  # Calcular Valores
+
+  # Calcular Valores Grupales
+  # plazos de 16 semanas exactas (pagos semanales)
+  
   _semanas      = _credito.tipo_credito.meses*4
   _pago_semanal = (monto_total/1000)*72.50
   _interes      = (_pago_semanal*_semanas)-monto_total
@@ -38,5 +48,5 @@ def update_capital(sender, **kwargs):
       fecha=_ultima_fecha,
     )
 
-    _ultima_fecha = _ultima_fecha+timedelta(days=5)
+    _ultima_fecha = _ultima_fecha+timedelta(days=7)
 

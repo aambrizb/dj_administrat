@@ -35,7 +35,12 @@
         <span class="fa fa-cog"></span>
         General
       </a>
-      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
+      <a class="nav-item nav-link {% if not obj.id %}disabled{% endif %}" 
+        {% if obj.id %}
+          id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"
+        {% else %}
+          href="javascript:void(0);"
+        {% endif %}>
         <span class="fa fa-users"></span>
         Integrantes
       </a>
