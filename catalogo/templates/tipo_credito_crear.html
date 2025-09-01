@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block contenido %}
-<div id="app" class="box">
+<div id="app" class="box p-5">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
@@ -22,9 +22,14 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
-        <span class= "fa fa-list"></span>
-        Configuración Ciclos
+        <a class="nav-link {% if not obj.id %}disabled{% endif %}" 
+            {% if obj.id %}
+                id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"
+            {% else %}
+                href="javascript:void(0);"
+            {% endif %}>
+            <span class="fa fa-list"></span>
+            Configuracion Ciclos
         </a>
     </li>
     </ul>

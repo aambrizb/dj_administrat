@@ -22,37 +22,48 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="direccion-tab" data-toggle="tab" href="#direccion" role="tab" aria-controls="direccion" aria-selected="false">
-        <span class= "fa fa-list"></span>
-        Direcciones
+        <a class="nav-link {% if not obj.id %}disabled{% endif %}" 
+            {% if obj.id %}
+                id="direccion-tab" data-toggle="tab" href="#direccion" role="tab" aria-controls="direccion" aria-selected="false"
+            {% else %}
+                href="javascript:void(0);"
+            {% endif %}>
+            <span class="fa fa-list"></span>
+            Direcciones
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab" aria-controls="documento" aria-selected="false">
-        <span class= "fa fa-folder-open"></span>
-        Documentos
+        <a class="nav-link {% if not obj.id %}disabled{% endif %}" 
+            {% if obj.id %}
+                id="documento-tab" data-toggle="tab" href="#documento" role="tab" aria-controls="documento" aria-selected="false"
+            {% else %}
+                href="javascript:void(0);"
+            {% endif %}>
+            <span class="fa fa-folder-open"></span>
+            Documentos
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="referencia-tab" data-toggle="tab" href="#referencia" role="tab" aria-controls="referencia" aria-selected="false">
-        <span class= "fa fa-address-book"></span>
-        Referencias
+        <a class="nav-link {% if not obj.id %}disabled{% endif %}" 
+            {% if obj.id %}
+                id="referencia-tab" data-toggle="tab" href="#referencia" role="tab" aria-controls="referencia" aria-selected="false"
+            {% else %}
+                href="javascript:void(0);"
+            {% endif %}>
+            <span class="fa fa-address-book"></span>
+            Referencias
         </a>
     </li>
     </ul>
     <div class="tab-content p-5" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">{{form}}</div>
     <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="direccion-tab">
-        {% comment %} <tabla app='catalogo' method='direccion_cliente' padre="cliente" padre_pk="{{obj.id}}" can_add="true"> {% endcomment %}
-        <tabla app='catalogo' method='direccion_cliente' padre="cliente" padre_pk="{{obj.id}}" data-filtro_cliente_id="{{obj.id}}" can_add="true">
-        </tabla>
-        
+        <tabla app='catalogo' method='cliente_direccion' padre="cliente" padre_pk="{{obj.id}}" data-filtro_cliente_id="{{obj.id}}" can_add="true">
+        </tabla>   
     </div>
     <div class="tab-pane fade" id="documento" role="tabpanel" aria-labelledby="documento-tab">
-        {% comment %} <tabla app='catalogo' method='direccion' padre="cliente" padre_pk="{{obj.id}}" can_add="true">
-
-        </tabla> {% endcomment %}
-        docu
+        <tabla app='catalogo' method='cliente_documentacion' padre="cliente" padre_pk="{{obj.id}}" can_add="true">
+        </tabla>
     </div>
     <div class="tab-pane fade" id="referencia" role="tabpanel" aria-labelledby="referencia-tab">
         <tabla app='catalogo' method='referencia_cliente' padre="cliente" padre_pk="{{obj.id}}" can_add="true">

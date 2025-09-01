@@ -32,7 +32,7 @@ class direccion(models.Model):
   estado = models.CharField(max_length=120)
   
   def __str__(self):
-    return f"{self.calle} {self.numero_exterior} {self.numero_interior} {self.colonia}"
+    return f"{self.calle} {self.numero_exterior} {self.numero_interior}, Col. {self.colonia}, {self.ciudad}, {self.estado}, CP.  {self.codigo_postal}"
 
 class cliente_direccion(models.Model):
   cliente = models.ForeignKey("cliente", blank=False, null=True, on_delete=models.PROTECT)
@@ -45,7 +45,7 @@ class tipo_documento(models.Model):
 class cliente_documentacion(models.Model):
   tipo_documento = models.ForeignKey("tipo_documento", blank=False, null=True, on_delete=models.PROTECT)
   cliente = models.ForeignKey("cliente", blank=False, null=True, on_delete=models.PROTECT)
-  # archivo = models.FieldFile()
+  archivo = models.FileField(upload_to='cliente_documentos/', blank=True, null=True)
   usuario = models.ForeignKey(settings.AUTH_USER_MODEL, blank=False, null=True, on_delete=models.PROTECT)
   fecha = models.DateTimeField(default=timezone.localtime)
 
