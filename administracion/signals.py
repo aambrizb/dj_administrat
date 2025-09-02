@@ -1,8 +1,17 @@
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from administracion.models import credito_integrante
+from administracion.models import credito_integrante, credito
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
+
+@receiver(pre_save, sender=credito_integrante)
+def limitar_integrante_credito_mensual(sender, instance, **kwargs):
+  credito_obj = instance.credito
+  if credito_obj.tipo_credito.tipo == 'M':
+    existe = credito_obj.credito_integrante_set.exclude(pk=instance.pk).exists()
+    if existe:
+      raise ValidationError("Este crédito es tipo individual, solo puede tener un integrante.")
 
 @receiver(post_save, sender=credito_integrante)
 def update_capital(sender, **kwargs):

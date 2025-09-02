@@ -90,7 +90,13 @@
 
     </div>
     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-      <tabla app="administracion" method="get_integrantes" padre="credito" padre_pk="{{ obj.id }}" data-filtro_credito_id="{{ obj.id }}" can_add="true"></tabla>
+      <tabla app="administracion" method="get_integrantes" padre="credito" padre_pk="{{ obj.id }}" data-filtro_credito_id="{{ obj.id }}"
+        {% if obj.tipo_credito.tipo != 'M' or obj.credito_integrante_set.count == 0 %}
+          can_add="true"
+        {% else %}
+          can_add="false"
+        {% endif %}
+      ></tabla>
     </div>
   </div>
 
