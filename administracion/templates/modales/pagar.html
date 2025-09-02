@@ -2,7 +2,15 @@
 {% block modal_title %}
   Pagar
 {% endblock %}
+
 {% block modal_body %}
+<script type= "text/javascript">
+  $(document).ready(function() {
+    {% if saved %}
+      window.location.href = '';
+    {% endif %}
+  })
+</script>
   {{ form }}
 {% endblock %}
 {% block modal_footer %}

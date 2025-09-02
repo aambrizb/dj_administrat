@@ -55,4 +55,6 @@ class credito_abono(models.Model):
   usuario = models.ForeignKey('usuario.usuario',blank=True,null=True,on_delete=models.PROTECT)
   monto   = models.FloatField(default=0)
 
-
+class abono_relacion(models.Model):
+  credito_abono = models.ForeignKey('credito_abono', blank=True, null=True, on_delete=models.PROTECT)
+  credito_pago = models.ForeignKey('credito_pago', blank=True, null=True, on_delete=models.PROTECT)

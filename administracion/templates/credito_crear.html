@@ -22,7 +22,7 @@
       });
 
       $(".btn_pagar").click(function() {
-        showModal("administracion","pagar",{'pk':$(this).data("pk")});
+        showModal("administracion","pagar",{'pk':$(this).data("pk"), 'credito_id':$(this).data("credito_id")});
       });
     });
   </script>
@@ -42,7 +42,11 @@
           href="javascript:void(0);"
         {% endif %}>
         <span class="fa fa-users"></span>
-        Integrantes
+        {% if obj.tipo_credito.tipo == 'M' %}
+          Cliente
+        {% else %}
+          Integrantes
+        {% endif %}
       </a>
     </div>
   </nav>
@@ -81,7 +85,12 @@
             <div class="col-6">Ciclo</div>
             <div class="col-6">{{ obj.ciclo }}</div>
           </div>
-
+          <div class="text-center">
+            <button type="button" class="btn btn-success">
+            <span class="fa fa-plus"></span>
+            Renovar Credito
+          </button>
+          </div>
         </div>
 
 
@@ -128,7 +137,7 @@
     </thead>
     <tbody>
     {% for item in obj.credito_pago_set.all %}
-      <tr class="{% if item.pagado %}bg-green text-white{% endif %} {% if item.no_pago == 13 %}bg-warning text-bold{% endif %}">
+      <tr id="fila-{{ item.id }}" class="{% if item.pagado %}bg-green text-white{% endif %} {% if item.no_pago == 13 %}bg-warning text-bold{% endif %}">
         <td class="text-center">{{ item.no_pago }}</td>
         <td class="text-center">{{ item.fecha }}</td>
         <td class="text-center">{{ item.pago_capital }}</td>
@@ -151,7 +160,7 @@
         </td>
         <td class="text-center">{{ item.pagado_fecha|default_if_none:'--' }}</td>
         <td>
-          <button type="button" class="btn btn-success btn_pagar" data-pk="{{ item.id }}">
+          <button type="button" class="btn btn-success btn_pagar" data-pk="{{ item.id }}" data-credito_id="{{item.credito_id}}">
             <span class="fa fa-money-bill"></span>
             Pagar
           </button>
