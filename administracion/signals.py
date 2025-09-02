@@ -91,37 +91,3 @@ def update_capital(sender, **kwargs):
       )
 
       _ultima_fecha = _ultima_fecha+timedelta(days=7)
-
-@receiver(post_save, sender=credito_abono)
-def crear_credito_pago(sender, instance, created, **kwargs):
-    if created:
-        credito = instance.credito
-        
-        monto_abono = instance.monto
-
-        # Obtenemos porcentajes dependiendo de la tasa
-        porcentaje_capital = getattr(credito, "porcentaje_capital", 100)
-        porcentaje_interes = getattr(credito, "porcentaje_interes", 0)
-
-        pago_capital = round(monto_abono * (porcentaje_capital / 100), 2)
-        interes = round(monto_abono * (porcentaje_interes / 100), 2)
-
-        # Creamos un registro en credito_pago
-        credito_pago.objects.create(
-            credito=credito,
-            no_pago=1,
-            fecha=instance.fecha.date(),
-            pago_capital=pago_capital,
-            interes=interes,
-            subtotal=pago_capital + interes,
-            iva=0,
-            pago=monto_abono,
-            saldo_capital=0,
-            saldo_interes=0,
-            cartera_vigente=0,
-            capital_mora=0,
-            interes_mora=0,
-            mora=0,
-            pagado=True,
-            pagado_fecha=instance.fecha
-        )
