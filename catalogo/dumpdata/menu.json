@@ -54,5 +54,19 @@
        "listar": true,
        "nivel": 0,
        "activo": true}
+  },
+  {
+    "model": "navegacion.menu",
+    "pk": 24,
+    "fields": {
+      "nombre": "Tipos de Interés",
+       "app": "catalogo",
+       "modelo": "tipo_interes",
+       "padre": 20,
+       "icono": "fa fa-ellipsis-v",
+       "permiso": "catalogo.add_tipo_interes",
+       "listar": true,
+       "nivel": 0,
+       "activo": true}
   }
 ]

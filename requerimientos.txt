@@ -1,2 +1,2 @@
-http://sys.pruebasdivox.com.mx/repositorio/frame/django-hkz-base-5.0.tar.gz
 requests
+dist/django-hkz-base-5.0.zip

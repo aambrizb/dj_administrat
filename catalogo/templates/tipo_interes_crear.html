@@ -21,9 +21,24 @@
         General
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {% if not obj.id %}disabled{% endif %}" 
+            {% if obj.id %}
+                id="factor-tab" data-toggle="tab" href="#factor" role="tab" aria-controls="factor" aria-selected="false"
+            {% else %}
+                href="javascript:void(0);"
+            {% endif %}>
+            <span class="fa fa-plus"></span>
+            Factores
+        </a>
+    </li>
     </ul>
     <div class="tab-content p-5" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">{{form}}</div>
+    <div class="tab-pane fade" id="factor" role="tabpanel" aria-labelledby="factor-tab">
+        <tabla app='catalogo' method='tipo_interes_factor' padre="tipo_interes" padre_pk="{{obj.id}}" data-filtro_tipo_interes_id="{{obj.id}}" can_add="true">
+        </tabla>
+    </div>
     </div>
 </div>
 

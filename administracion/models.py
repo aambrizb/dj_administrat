@@ -11,7 +11,7 @@ class credito(models.Model):
 
   fecha            = models.DateTimeField(default=timezone.localtime)
   tipo_credito     = models.ForeignKey('catalogo.tipo_credito', blank=True, null=True, on_delete=models.PROTECT)
-  tasa             = models.ForeignKey('catalogo.tipo_credito_ciclo', blank=True, null=True, on_delete=models.PROTECT)
+  tipo_interes     = models.ForeignKey('catalogo.tipo_interes', blank=True, null=True, on_delete=models.PROTECT)
   nombre           = models.CharField(max_length=120)
   monto_total      = models.FloatField(default=0)
   monto_pago       = models.FloatField(default=0)
@@ -48,6 +48,8 @@ class credito_pago(models.Model):
   mora            = models.FloatField(default=0)
   pagado          = models.BooleanField(default=False)
   pagado_fecha    = models.DateTimeField(blank=True,null=True)
+  factor_capital  = models.FloatField(default=0)
+  factor_interes  = models.FloatField(default=0)
 
 class credito_abono(models.Model):
   credito = models.ForeignKey('credito',blank=True,null=True,on_delete=models.PROTECT)

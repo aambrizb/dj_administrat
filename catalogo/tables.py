@@ -1,10 +1,10 @@
 from divox.app.base.utilidades import Tabla
 
-class tipo_ciclo(Tabla):
+class tipo_interes_factor(Tabla):
     app = "catalogo"
-    modelo = "tipo_credito_ciclo"
+    modelo = "tipo_interes_factor"
 
-    list_display = ('ciclo', 'tasa_interes','acciones',)
+    list_display = ('no_pago','porcentaje_capital', 'porcentaje_interes','acciones',)
     list_hidden = ['id']
 
     def acciones(self, obj):
@@ -39,11 +39,24 @@ class cliente_documentacion(Tabla):
         }
     acciones.is_component = True
 
-class referencia_cliente(Tabla):
+class cliente_referencia(Tabla):
     app = "catalogo"
     modelo = "cliente_referencia"
 
     list_display = ('nombre', 'apellido_paterno', 'apellido_materno', 'telefono', 'observaciones', 'valida', 'acciones')
+    list_hidden = ['id']
+
+    def acciones(self, obj):
+        return {
+            'component': 'acciones'
+        }
+    acciones.is_component = True
+
+class credito_factor(Tabla):
+    app = "catalogo"
+    modelo = "credito_factor"
+
+    list_display = ('no_pago','porcentaje_capital', 'porcentaje_interes', 'acciones')
     list_hidden = ['id']
 
     def acciones(self, obj):

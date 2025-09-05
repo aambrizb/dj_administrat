@@ -72,12 +72,18 @@ class tipo_credito(models.Model):
   activo = models.BooleanField(default=True)
 
   def __str__(self):
-    return self.nombre
+    return f"{self.nombre} {self.duracion} {self.tipo}"
 
-class tipo_credito_ciclo(models.Model):
-  tipo_credito = models.ForeignKey("tipo_credito", blank=False, null=True, on_delete=models.PROTECT)
-  ciclo = models.IntegerField()
-  tasa_interes = models.FloatField()
+class tipo_interes(models.Model):
+  interes = models.FloatField(default=0)
+  factor  = models.FloatField(default=0)
+  activo = models.BooleanField(default=True)
 
   def __str__(self):
-    return str(self.tasa_interes)
+    return str(self.interes)
+
+class tipo_interes_factor(models.Model):
+  tipo_interes = models.ForeignKey("tipo_interes", blank=False, null=True, on_delete=models.PROTECT)
+  no_pago = models.IntegerField(default=1)
+  porcentaje_capital = models.FloatField(default=0)
+  porcentaje_interes = models.FloatField(default=0)

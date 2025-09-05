@@ -1,6 +1,7 @@
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from administracion.models import credito_integrante, credito_abono, credito_pago
+from administracion.models import credito_integrante##,credito_pago
+from catalogo.models import tipo_interes_factor
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError
@@ -25,7 +26,7 @@ def update_capital(sender, **kwargs):
   _credito = instance.credito
 
   #ciclo asociado al credito
-  ciclo_obj = _credito.tasa
+  ciclo_obj = _credito.tipo_interes
 
   if _credito.tipo_credito.tipo == 'M':
     #Calcular Valores Individuales
@@ -43,20 +44,9 @@ def update_capital(sender, **kwargs):
     # Calcular Valores Grupales
   else:
 
-    factor = 82.5  
     if ciclo_obj:
     # Obtener tasa y definir factor por tasa
-      tasa_interes = ciclo_obj.tasa_interes
-
-      factores = {
-        8: 82.5,
-        7: 80.0,
-        6: 77.5,
-        5: 75.0,
-        4: 72.5,
-      }
-
-      factor = factores.get(tasa_interes, 82.5)
+      factor = ciclo_obj.factor
 
     _semanas      = _credito.tipo_credito.duracion
     _pago_semanal = (monto_total/1000)*factor
@@ -72,22 +62,45 @@ def update_capital(sender, **kwargs):
   # Eliminar Corrida Anterior
   _credito.credito_pago_set.all().delete()
 
-  _ultima_fecha = _credito.orden_desembolso+timedelta(days=_credito.dia_pago-1)
-
+  _ultima_fecha  =  _credito.orden_desembolso
+  _ultima_fecha  += relativedelta(
+    day=_credito.dia_pago, months=1
+    if _ultima_fecha.day > _credito.dia_pago else 0)
   # Crear nueva Tabla
-  if _credito.tipo_credito.tipo == 'M':
-    for x in range(int(_meses)):
-      _credito.credito_pago_set.create(
-        no_pago=x+1,
-        fecha=_ultima_fecha,
-      )
-
-      _ultima_fecha = _ultima_fecha + relativedelta(months=1)
+  if _credito.tipo_credito.tipo =='M':
+    _rango    = range(int(_meses))
+    _relative = relativedelta(months=1)
   else:
-    for x in range(int(_semanas)):
-      _credito.credito_pago_set.create(
-        no_pago=x+1,
-        fecha=_ultima_fecha,
-      )
+    _rango    = range(int(_semanas))
+    _relative = timedelta(days=7)
+    tipo_interes = _credito.tipo_interes
 
-      _ultima_fecha = _ultima_fecha+timedelta(days=7)
+  for x in _rango:
+    _factor  = tipo_interes_factor.objects.filter(
+        tipo_interes = _credito.tipo_interes,
+        no_pago      = x+1
+    ).last()
+
+    _data = {
+      'no_pago'        : x+1,
+      'fecha'          : _ultima_fecha,
+      'factor_capital' : _factor.porcentaje_capital,
+      'factor_interes' : _factor.porcentaje_interes
+    }
+
+    _credito.credito_pago_set.create( **_data )
+
+    _ultima_fecha = _ultima_fecha + _relative
+
+# @receiver(post_save, sender=credito_pago)
+# def update_credito_pago(sender, instance, created, **kwargs):
+
+#   if not created and instance.pago:
+
+#     # _factor_capital = 100
+#     credito_pago.objects.filter(pk=instance.pk).update(
+#       # pago_capital  = _factor_capital,
+#       pago_capital  = 100,
+#       interes       = 100,
+#       subtotal      = 100
+#     )

@@ -10,7 +10,7 @@ def pagar(request,app,popup):
   obj_credito = credito_pago.objects.filter(pk = pk).last()
 
   form = credito_abonoForm(request.POST or None)
-  print ('*' *20)
+
   if form.is_valid():
     obj = form.save()
 
