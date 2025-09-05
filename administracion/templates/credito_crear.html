@@ -5,6 +5,12 @@
     .pagado {
         background-color:green;
     }
+
+    .form-readonly input,
+    .form-readonly select,
+    .form-readonly textarea {
+        pointer-events: none;
+    }
   </style>
 {% endblock %}
 
@@ -54,7 +60,11 @@
     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
       <div class="row">
         <div class="col-8">
-          {% include 'componentes/formulario.html' %}
+          <form method="post" id="form_credito">
+            <fieldset {% if pagos %}class="form-readonly"{% endif %}>
+              {% include 'componentes/formulario.html' %}
+            </fieldset>
+          </form>
         </div>
         <div class="col-4">
           <h3 class="text-center">Resumen</h3>
@@ -85,12 +95,14 @@
             <div class="col-6">Ciclo</div>
             <div class="col-6">{{ obj.ciclo }}</div>
           </div>
+          {% if obj.cartera_vigente == 0 %}
           <div class="text-center">
             <button type="button" class="btn btn-success">
             <span class="fa fa-plus"></span>
             Renovar Credito
           </button>
           </div>
+          {% endif %}
         </div>
 
 
@@ -100,12 +112,7 @@
     </div>
     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
       <tabla app="administracion" method="get_integrantes" padre="credito" padre_pk="{{ obj.id }}" data-filtro_credito_id="{{ obj.id }}"
-        {% if obj.tipo_credito.tipo != 'M' or obj.credito_integrante_set.count == 0 %}
-          can_add="true"
-        {% else %}
-          can_add="false"
-        {% endif %}
-      ></tabla>
+      can_add="{{ obj.id }}"></tabla>
     </div>
   </div>
 

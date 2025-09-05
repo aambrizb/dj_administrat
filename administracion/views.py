@@ -7,8 +7,12 @@ def vista_credito(request,pk=None):
 
   obj = credito.objects.filter(pk=pk).last()
 
+  pagos = False
+  if obj:
+    pagos = obj.credito_pago_set.filter(pagado_fecha__isnull=False).exists()
+
   form = creditoForm(request.POST or None,instance=obj)
-  if form.is_valid():
+  if not pagos and form.is_valid():
     obj = form.save()
 
     # Generar Detalle
@@ -17,5 +21,6 @@ def vista_credito(request,pk=None):
   return {
     'custom' : True,
     'form'   : form,
-    'obj'    : obj
+    'obj'    : obj,
+    'pagos'  : pagos
   }
