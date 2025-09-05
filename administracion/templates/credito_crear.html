@@ -137,12 +137,12 @@
     </thead>
     <tbody>
     {% for item in obj.credito_pago_set.all %}
-      <tr id="fila-{{ item.id }}" class="{% if item.pagado %}bg-green text-white{% endif %} {% if item.no_pago == 13 %}bg-warning text-bold{% endif %}">
+      <tr id="fila-{{ item.id }}" class="{% if item.pagado %}bg-green text-white{% elif item.pagado_fecha %}bg-warning text-dark{% endif %}">
         <td class="text-center">{{ item.no_pago }}</td>
         <td class="text-center">{{ item.fecha }}</td>
         <td class="text-center">{{ item.pago_capital }}</td>
         <td class="text-center">{{ item.interes }}</td>
-        <td class="text-center">$ 0.00</td>
+        <td class="text-center">{{ item.subtotal }}</td>
         <td class="text-center">{{ item.iva }}</td>
         <td class="text-center">{{ item.pago }}</td>
         <td class="text-center">{{ item.saldo_capital }}</td>

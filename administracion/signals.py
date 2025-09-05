@@ -1,10 +1,11 @@
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from administracion.models import credito_integrante##,credito_pago
+from administracion.models import credito_integrante,credito_pago
 from catalogo.models import tipo_interes_factor
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 @receiver(pre_save, sender=credito_integrante)
 def limitar_integrante_credito_mensual(sender, instance, **kwargs):
@@ -73,7 +74,6 @@ def update_capital(sender, **kwargs):
   else:
     _rango    = range(int(_semanas))
     _relative = timedelta(days=7)
-    tipo_interes = _credito.tipo_interes
 
   for x in _rango:
     _factor  = tipo_interes_factor.objects.filter(
@@ -92,15 +92,46 @@ def update_capital(sender, **kwargs):
 
     _ultima_fecha = _ultima_fecha + _relative
 
-# @receiver(post_save, sender=credito_pago)
-# def update_credito_pago(sender, instance, created, **kwargs):
+@receiver(post_save, sender=credito_pago)
+def update_credito_pago(sender, instance, created, **kwargs):
 
-#   if not created and instance.pago:
+  if not created and instance.pago:
 
-#     # _factor_capital = 100
-#     credito_pago.objects.filter(pk=instance.pk).update(
-#       # pago_capital  = _factor_capital,
-#       pago_capital  = 100,
-#       interes       = 100,
-#       subtotal      = 100
-#     )
+    monto_total    = instance.credito.monto_total
+    monto_pago    = instance.credito.monto_pago
+    interes        = instance.credito.monto_interes
+    monto_final   = instance.credito.monto_final
+
+    pago = instance.pago
+    _factor_capital = instance.factor_capital / 100
+    _factor_interes = instance.factor_interes / 100
+
+    _pago_capital    = pago * _factor_capital
+    _interes         = pago * _factor_interes
+    _subtotal        = _interes / 1.16
+    _iva             = _interes - _subtotal
+    _saldo_capital   = monto_total - _pago_capital
+    _saldo_interes   = interes - _interes
+    _cartera_vigente = monto_final - pago
+    _capital_mora    = (monto_pago * _factor_capital) - _pago_capital
+    _interes_mora    = (monto_pago * _factor_interes) - _interes
+    _mora            = _capital_mora + _interes_mora
+
+    _pagado = pago >=monto_pago
+    _pagado_fecha = timezone.now()
+
+
+    credito_pago.objects.filter(pk=instance.pk).update(
+      pago_capital    = float('{0:.2f}'.format(_pago_capital)),
+      interes         = float('{0:.2f}'.format(_interes)),
+      subtotal        = float('{0:.2f}'.format(_subtotal)),
+      iva             = float('{0:.2f}'.format(_iva)),
+      saldo_capital   = float('{0:.2f}'.format(_saldo_capital)),
+      saldo_interes   = float('{0:.2f}'.format(_saldo_interes)),
+      cartera_vigente = float('{0:.2f}'.format(_cartera_vigente)),
+      capital_mora    = float('{0:.2f}'.format(_capital_mora)),
+      interes_mora    = float('{0:.2f}'.format(_interes_mora)),
+      mora            = float('{0:.2f}'.format(_mora)),
+      pagado          = _pagado,
+      pagado_fecha    = _pagado_fecha
+    )
