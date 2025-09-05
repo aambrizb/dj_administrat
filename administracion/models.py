@@ -59,4 +59,4 @@ class credito_abono(models.Model):
 
 class abono_relacion(models.Model):
   credito_abono = models.ForeignKey('credito_abono', blank=True, null=True, on_delete=models.PROTECT)
-  credito_pago = models.ForeignKey('credito_pago', blank=True, null=True, on_delete=models.PROTECT)
+  credito_pago  = models.ForeignKey('credito_pago', blank=True, null=True, on_delete=models.PROTECT)

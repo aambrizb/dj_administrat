@@ -98,9 +98,9 @@ def update_credito_pago(sender, instance, created, **kwargs):
   if not created and instance.pago:
 
     monto_total    = instance.credito.monto_total
-    monto_pago    = instance.credito.monto_pago
+    monto_pago     = instance.credito.monto_pago
     interes        = instance.credito.monto_interes
-    monto_final   = instance.credito.monto_final
+    monto_final    = instance.credito.monto_final
 
     pago = instance.pago
     _factor_capital = instance.factor_capital / 100

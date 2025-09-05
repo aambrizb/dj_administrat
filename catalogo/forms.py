@@ -5,25 +5,25 @@ from catalogo.models import cliente, cliente_referencia, cliente_direccion, clie
 
 class cliente_direccionModal(CustomModelForm):
     class Meta:
-        model = cliente_direccion
+        model   = cliente_direccion
         exclude = ('cliente',)
 
 class cliente_documentacionModal(CustomModelForm):
     class Meta:
-        model = cliente_documentacion
+        model   = cliente_documentacion
         exclude = ('cliente','usuario', 'fecha', )
 
 class clienteForm(CustomModelForm):
     class Meta:
-        model = cliente
+        model   = cliente
         exclude = ('fecha_registro',)
 
 class cliente_referenciaModal(CustomModelForm):
     class Meta:
-        model = cliente_referencia
+        model   = cliente_referencia
         exclude = ('cliente', 'fecha_registro', 'valida_usuario', 'valida_fecha')
 
 class tipo_interes_factorModal(CustomModelForm):
     class Meta:
-        model = tipo_interes_factor
+        model   = tipo_interes_factor
         exclude = ('tipo_interes',)
