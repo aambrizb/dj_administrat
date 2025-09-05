@@ -166,12 +166,14 @@
           {% endif %}
         </td>
         <td class="text-center">{{ item.pagado_fecha|default_if_none:'--' }}</td>
-        <td>
-          <button type="button" class="btn btn-success btn_pagar" data-pk="{{ item.id }}" data-credito_id="{{item.credito_id}}">
-            <span class="fa fa-money-bill"></span>
-            Pagar
-          </button>
-        </td>
+          <td>
+            {% if not item.pagado_fecha %}
+              <button type="button" class="btn btn-success btn_pagar" data-pk="{{ item.id }}" data-credito_id="{{item.credito_id}}">
+                <span class="fa fa-money-bill"></span>
+                Pagar
+              </button>
+            {% endif %}
+          </td>
       </tr>
     {% endfor %}
     </tbody>
