@@ -1,7 +1,22 @@
 {% extends 'core/login.html' %}
 {% load static %}
+{% block css %}
+{{ block.super }}
+<style>
+ body{
+    background-image: url("{% static 'images/image3.png' %}");
+ }
+</style>
+{% endblock %}
 {% block logo %}
-<div class="text-center" style="top: -100px; margin-bottom: 5px;">
-    <img style="width:230px; height:200px;" src="{% static 'images/logo.png' %}"/>
+<div class="text-center" style="top: 10px; margin-bottom: 5px;">
+  <div style="
+    display: inline-block;
+    padding: 5px 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+  ">
+    <img style="width:200px; height:180px;" src="{% static 'images/logo.png' %}"/>
+  </div>
 </div>
 {% endblock %}
