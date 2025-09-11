@@ -6,6 +6,7 @@ from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.db.models import Sum
 
 @receiver(pre_save, sender=credito_integrante)
 def limitar_integrante_credito_mensual(sender, instance, **kwargs):
@@ -85,7 +86,8 @@ def update_capital(sender, **kwargs):
       'no_pago'        : x+1,
       'fecha'          : _ultima_fecha,
       'factor_capital' : _factor.porcentaje_capital,
-      'factor_interes' : _factor.porcentaje_interes
+      'factor_interes' : _factor.porcentaje_interes,
+      'permite_pagar'  : True if x+1 == 1 else False
     }
 
     _credito.credito_pago_set.create( **_data )
@@ -135,3 +137,8 @@ def update_credito_pago(sender, instance, created, **kwargs):
       pagado          = _pagado,
       pagado_fecha    = _pagado_fecha
     )
+
+    total_mora = instance.credito.credito_pago_set.aggregate(total=Sum('mora'))['total'] or 0
+
+    instance.credito.monto_mora = float('{0:.2f}'.format(total_mora))
+    instance.credito.save()

@@ -26,6 +26,12 @@ class credito(models.Model):
   pagos_realizados = models.IntegerField(default=0)
   estado           = models.CharField(max_length=1,choices=tEstado,default='A')
 
+  def can_add(self):
+    if self.tipo_credito.tipo != 'M':
+      return True
+    pagos_existen = self.credito_pago_set.filter(pagado_fecha__isnull=False).exists()
+    return not pagos_existen
+
 class credito_integrante(models.Model):
   credito = models.ForeignKey('credito',blank=True,null=True,on_delete=models.PROTECT)
   cliente = models.ForeignKey('catalogo.cliente', blank=True, null=True, on_delete=models.PROTECT)
@@ -50,6 +56,7 @@ class credito_pago(models.Model):
   pagado_fecha    = models.DateTimeField(blank=True,null=True)
   factor_capital  = models.FloatField(default=0)
   factor_interes  = models.FloatField(default=0)
+  permite_pagar   = models.BooleanField(default=False)
 
 class credito_abono(models.Model):
   credito = models.ForeignKey('credito',blank=True,null=True,on_delete=models.PROTECT)

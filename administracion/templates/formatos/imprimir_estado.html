@@ -1,0 +1,178 @@
+{% extends 'core/print.html' %}
+{% block impresion %}
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1, h2, h3 {
+    text-align: center;
+    margin: 0;
+  }
+
+  .titulo {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+    margin-bottom: 20px;
+  }
+  table tr { 
+    height: 40px;
+  }
+
+  th, td {
+    border: 1px solid #000;
+    padding: 6px;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .no-border {
+    border: none !important;
+  }
+
+  .signatures {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    border-collapse: collapse;
+  }
+
+  .signatures td {
+    border: 1px solid #000;
+    height: 80px;
+    text-align: right;
+    padding-right: 5px;
+  }
+
+  .nota {
+    margin-top: 20px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+</style>
+
+<h2>CONTROL DE PAGOS DE CRÉDITO INDIVIDUAL {{ cliente_nombre }}</h2>
+<h3>{{ obj.ciclo }} Ciclo - {{ obj.tipo_interes }}%</h3>
+
+
+<table border="1" cellspacing="0" cellpadding="">
+  <tr>
+    <th rowspan="4" style="width: 20%;">{{ cliente_nombre }}</th>
+    <td></td>
+    <td></td>
+      {% for item in primera_mitad %}
+        <th>{{ item.no_pago }}</th>
+      {% endfor %}
+  </tr>
+  <tr>
+    
+    <th>MONTO</th>
+    <th>PAGO</th>
+      {% for item in primera_mitad %}
+        <th>{{ item.fecha }}</th>
+      {% endfor %}
+  </tr>
+  <tr>
+    <td>${{ obj.monto_total }}</td>
+    <td>${{ obj.monto_pago }}</td>
+      {% for i in primera_mitad %}
+        <td></td>
+      {% endfor %}
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+      {% for i in primera_mitad %}
+        <td></td>
+      {% endfor %}
+  </tr>
+</table>
+
+<table class="signatures">
+  <tr>
+    <th style="width: 32%;">FIRMAS DE ENTREGADO</th>
+    {% for i in primera_mitad %}
+      <td></td>
+    {% endfor %}
+  </tr>
+</table>
+
+<table class="signatures">
+  <tr>
+    <th style="width: 32%;">FIRMAS DE RECIBIDO</th>
+    {% for i in primera_mitad %}
+      <td></td>
+    {% endfor %}
+  </tr>
+</table>
+
+{% comment %} Segunda Mitad {% endcomment %}
+<table border="1" cellspacing="0" cellpadding="">
+  <tr>
+    <th rowspan="4" style="width: 20%;">{{ cliente_nombre }}</th>
+    <td></td>
+    <td></td>
+      {% for item in segunda_mitad %}
+        <th>{{ item.no_pago }}</th>
+      {% endfor %}
+  </tr>
+  <tr>
+    
+    <th>MONTO</th>
+    <th>PAGO</th>
+      {% for item in segunda_mitad %}
+        <th>{{ item.fecha }}</th>
+      {% endfor %}
+  </tr>
+  <tr>
+    <td>${{ obj.monto_total }}</td>
+    <td>${{ obj.monto_pago }}</td>
+      {% for i in segunda_mitad %}
+        <td></td>
+      {% endfor %}
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+      {% for i in segunda_mitad %}
+        <td></td>
+      {% endfor %}
+  </tr>
+</table>
+
+<table class="signatures">
+  <tr>
+    <th style="width: 32%;">FIRMAS DE ENTREGADO</th>
+    {% for i in segunda_mitad %}
+      <td></td>
+    {% endfor %}
+  </tr>
+</table>
+
+<table class="signatures">
+  <tr>
+    <th style="width: 32%;">FIRMAS DE RECIBIDO</th>
+    {% for i in segunda_mitad %}
+      <td></td>
+    {% endfor %}
+  </tr>
+</table>
+
+<p class="nota">
+  NOTA: SI EL CRÉDITO PRESENTA ALGÚN ATRASO O SE DEBE ALGÚN SALDO NO SE PODRÁ TOMAR EN CUENTA EL 10%
+</p>
+
+{% endblock %}

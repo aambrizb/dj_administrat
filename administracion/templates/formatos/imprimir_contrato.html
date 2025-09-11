@@ -1,0 +1,206 @@
+{% extends 'core/print.html' %}
+{% block impresion %}
+
+<style>
+  @page {
+    margin-top: 100px;
+    margin-right: 60px;
+    margin-bottom: 80px;
+    margin-left: 60px;
+  }
+
+  body {
+    font-family: Arial;
+    font-size: 25px;
+    line-height: 1.6;
+    text-align: justify;
+  }
+
+  h3 {
+    font-family: Arial;
+    text-align: justify;
+    font-size: 25px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+  }
+
+  .uppercase {
+    font-family: Arial;
+    font-size: 25px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  h2 {
+    font-family: Arial;
+    text-align: center;
+    font-size: 25px;
+  }
+
+  .h2-pagare {
+    font-family: Arial;
+    text-align: center;
+    font-size: 25px;
+    margin-top: 80px;
+  }
+  
+  .section-monto {
+    font-family: Arial;
+    text-align: right;
+    font-size: 25px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+  }
+
+  .section-title {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    padding: 4px;
+    margin: 20px 0 10px 0;
+    font-size: 25px;
+    background-color: #f5f5f5;
+  }
+  
+  .section-firm {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-top: 2px solid #000;
+    padding: 20px;
+    margin: 350px auto 10px auto;
+    font-size: 25px;
+    background-color: #f5f5f5;
+    width: 500px;
+  }
+
+  .text-pagare {
+    font-family: Arial;
+    text-align: justify;
+    font-size: 25px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .clausula-title {
+    font-weight: bold;
+    font-size: 25px;
+    text-transform: uppercase;
+  }
+
+  .bold {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  p {
+    margin: 8px 0;
+    font-size: 25px;
+  }
+
+  .subpoint {
+    font-size: 25px;
+    margin-left: 30px;
+  }
+
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+</style>
+
+<body>
+  <h3>
+    CONTRATO DE MUTUO CON INTERES QUE CELEBRAN POR UNA PARTE EL C. 
+    <span class="bold">FLOR ANDREA AMBRIS BEDOLLA</span> 
+    A QUIEN EN LO SUCESIVO SE LE DENOMINARÁ COMO EL “MUTUANTE” 
+    Y POR OTRA LOS CC. 
+    <span class="bold"> {{ cliente_nombre }}</span> 
+    EN LO SUCESIVO SE DENOMINARÁ COMO LOS “EL MUTUARIO”, 
+    AL TENOR DE LAS SIGUIENTES DECLARACIONES Y CLÁUSULAS:
+  </h3>
+
+  <div class="section-title">DECLARACIONES</div>
+  <h3>1.- Declara el MUTUANTE que:</h3>
+  <div class="subpoint">
+    <p>a) Es persona física de ocupación empleado, con plena capacidad de goce y ejercicio de sus facultades para la celebración del presente contrato.</p>
+    <p>b) Tener su domicilio en calle Violeta #67 col. Las camelinas C.P. 60950, en Lázaro Cárdenas, Michoacán.</p>
+    <p>c) Cuenta con los recursos necesarios para obligarse en términos del presente contrato y otorgar la cantidad materia del presente contrato al MUTUARIO.</p>
+  </div>
+  
+
+  <h3>2.- Declara EL MUTUARIO que:</h3>
+  <div class="subpoint">
+    <p>a) Son personas físicas, con plena capacidad de goce y ejercicio de sus facultades para la celebración del presente contrato.</p>
+    <p>b) Tienen su domicilio en {{ cliente_direccion }}.</p>
+    <p>c) Declara bajo protesta de decir verdad que los datos contenidos en el presente contrato son verdaderos y correctos.</p>
+    <p>d) Previamente a la celebración del presente Contrato, el MUTUANTE les ha informado sobre su contenido, y entiende perfectamente el mismo.</p>
+    <p>e) Que cuenta con los recursos económicos suficientes para dar cumplimiento a todas y cada una de las obligaciones, que se derivan del presente contrato.</p>
+  </div>
+
+  <div class="section-title">CLÁUSULAS</div>
+
+  <p><span class="clausula-title">PRIMERA. OBJETO DEL CONTRATO.</span> - El MUTUANTE se obliga a transferir en este acto, en favor de EL MUTUARIO la cantidad de 
+  <span class="bold">${{ obj.monto_total }} ({{ monto_texto }} pesos 00/100 M.N.)</span></p>
+
+  <p><span class="clausula-title">SEGUNDA. DISPOSICIÓN Y FIRMA DEL PAGARE.</span> - La entrega de importe de la cantidad materia del presente contrato se realizará en efectivo EL MUTUARIO.
+  Así mismo al momento de otorgar dicha cantidad, EL MUTUARIO deberán suscribir un pagare a favor del  MUTUANTE, mismo que deberá contener los requisitos que establece la ley, surtiendo así 
+  los efectos legales a que haya lugar. 
+  </p>
+
+  <p><span class="clausula-title">TERCERA. FORMA DE PAGO.</span> - las partes acuerdan lo siguiente:</p>
+  <div class="subpoint">
+    <p>a) Fecha de pago. - EL MUTUARIO se obligan a restituir la totalidad de la cantidad establecida en la CLAUSULA PRIMERA y los intereses ordinarios en {{duracion}} Amortizaciones {{tipo_plazo}}, las
+      cuales se deberán cumplir los días {{obj.dia_pago}} de cada mes </p>
+    <p>b) Lugar de pago. - EL MUTUARIO se obligan a realizar la entrega a que se refiere el inciso anterior en el domicilio ubicado {{ cliente_direccion }}.</p>
+    <p>c) Liquidación anticipada. - En caso de que, por así convenir a sus intereses, EL MUTUARIO deseen liquidar antes de la fecha estipulada en el inciso a) de la CLAUSULA TERCERA del presente 
+      contrato, podrán hacerlo si, y solo si, da aviso al MUTUANTE con un mes de anticipación. En caso de no cumplir con esta estipulación EL MUTUARIO deberá pagar una pena convencional del 10% 
+      sobre el saldo adeudado a la fecha.</p>
+    <p>d) Pagos anticipados. - El MUTUARIO podrá realizar abonos a la deuda materia del presente contrato, los cuales tendrán como prelación de pago primero el interés ordinario y después el capital vigente.</p>
+  </div>
+  
+  <p><span class="clausula-title">CUARTA. INTERESES ORDINARIOS.</span> - La tasa de interés del presente contrato es fija, y corresponde al {{obj.tipo_interes}}% <span class="uppercase">({{porcentaje_texto}} POR CIENTO)</span> mensual. En caso de pagos 
+  anticipados al crédito se tomará como base para el cálculo de intereses meses de 30 días.
+  </p>
+
+  <p><span class="clausula-title">QUINTA. INTERESES MORATORIO.</span> - En caso de que la totalidad de la deuda no sea pagada en el tiempo estipulado en el inciso a) de la CLAUSULA TERCERA del presente contrato, 
+  el MUTUARIO se obliga a pagar un interés moratorio, mismo que será de hasta el 10% (DIEZ POR CIENTO) mensual, mismo que será calculado sobre la deuda principal.
+  </p>
+
+  <p><span class="clausula-title">SEXTA. VIGENCIA.</span> - El presente contrato tendrá la vigencia establecida en el inciso a) de la CLAUSULA TERCERA, mismo que no podrá ser prorrogado, salvo que exista algún 
+  saldo pendiente por parte EL MUTUARIO al término de la vigencia del mismo, en cuyo caso, el presente contrato continuará vigente hasta que EL MUTUARIO liquide el monto adeudado al MUTUANTE.
+  </p>
+
+  <p><span class="clausula-title">SEPTIMA. JURISDICCION Y COMPETENCIA.</span> - Para la interpretación y cumplimiento del presente contrato, las partes convienen en someterse a la jurisdicción y competencia de 
+  los tribunales de Lázaro Cárdenas, Michoacán, así como a las leyes aplicables al efecto, renunciando a cualquier otro que por razón de su domicilio futuro pudiera corresponderles.
+  </p>
+
+  <h3>Ciudad y Puerto Lázaro Cárdenas, Michoacán a <span class="bold">{{fecha_formateada}} </span></h3>
+  <div class="section-firm">JUAN CARLOS MARTINEZ ESPINOZA</div>
+  <div class="uppercase">{{ cliente_direccion }}</div>
+
+{% comment %} PAGARÉ {% endcomment %}
+  <div class="page-break"></div>
+  <div class="h2-pagare"> PAGARÉ </div>
+  <div class="section-monto">BUENO POR <span class="bold"> ${{ obj.monto_total }}</span> </div>
+  <div class="text-pagare">
+    Debemos y pagaremos solidariamente y prometemos incondicionalmente paga a 
+    la orden de FLOR ANDREA AMBRIS BEDOLLA , la suma de <span class="bold">${{ obj.monto_total }} ({{ monto_texto }} 
+    pesos 00/100 M.N.) </span> más los intereses ordinarios a razón del{{obj.tipo_interes}}% 
+    <span class="uppercase">({{porcentaje_texto}} POR CIENTO)</span> mensual.
+  </div>
+  <div class="text-pagare">
+    La suma enunciada anteriormente será pagada el día 06 DE AGOSTO 2025, que 
+    es la fecha del vencimiento. Los firmantes reconocen que en caso de que la cantidad 
+    que ampara el presente no sea pagada puntualmente, causara intereses moratorios 
+    a razón del 10%( DIEZ POR CIENTO) mensual, mismos que correrán a partir del 
+    día siguiente del vencimiento del pago y hasta la liquidación del documento.
+  </div>
+
+  <div class="section-firm">JUAN CARLOS MARTINEZ ESPINOZA</div>
+  <div class="uppercase">{{ cliente_direccion }}</div>
+
+</body>
+{% endblock %}
